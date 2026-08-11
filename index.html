@@ -33,10 +33,10 @@
             mask-image:radial-gradient(130% 95% at 50% -5%, #000 28%, transparent 76%);
     animation:gridPan 26s linear infinite; will-change:transform; }
   @keyframes gridPan{ from{ transform:translate3d(0,0,0); } to{ transform:translate3d(46px,46px,0); } }
-  .orb{ position:absolute; border-radius:50%; filter:blur(72px); will-change:transform; }
-  .orb.a{ width:540px; height:540px; top:-170px; right:-90px; background:radial-gradient(circle at 35% 35%, rgba(255,176,32,0.42), transparent 66%); animation:drift1 28s ease-in-out infinite; }
-  .orb.b{ width:480px; height:480px; bottom:-180px; left:-130px; background:radial-gradient(circle at 50% 50%, rgba(63,182,168,0.34), transparent 66%); animation:drift2 32s ease-in-out infinite; }
-  .orb.c{ width:400px; height:400px; top:44%; left:52%; background:radial-gradient(circle at 50% 50%, rgba(110,168,255,0.26), transparent 66%); animation:drift3 36s ease-in-out infinite; }
+  .orb{ position:absolute; border-radius:50%; filter:blur(58px); will-change:transform; }
+  .orb.a{ width:540px; height:540px; top:-170px; right:-90px; background:radial-gradient(circle at 35% 35%, rgba(255,176,32,0.58), transparent 68%); }
+  .orb.b{ width:480px; height:480px; bottom:-180px; left:-130px; background:radial-gradient(circle at 50% 50%, rgba(63,182,168,0.48), transparent 68%); }
+  .orb.c{ width:400px; height:400px; top:44%; left:52%; background:radial-gradient(circle at 50% 50%, rgba(110,168,255,0.42), transparent 68%); }
   @keyframes drift1{ 0%,100%{ transform:translate3d(0,0,0); } 50%{ transform:translate3d(-60px,44px,0); } }
   @keyframes drift2{ 0%,100%{ transform:translate3d(0,0,0); } 50%{ transform:translate3d(52px,-32px,0); } }
   @keyframes drift3{ 0%,100%{ transform:translate3d(0,0,0); } 50%{ transform:translate3d(-44px,-34px,0); } }
@@ -119,7 +119,8 @@
   .sev.med{ color:var(--med); background:rgba(245,197,24,0.12); }
   .sev.low{ color:var(--low); background:rgba(107,118,136,0.14); }
   .sev.info{ color:#6EA8FF; background:rgba(110,168,255,0.12); }
-  .f-title{ font-weight:600; font-size:15px; }
+  .f-title{ font-weight:600; font-size:15px; transition:text-shadow .18s ease, transform .18s ease; }
+  .ledger-row.item:hover .f-title{ text-shadow:0 6px 16px rgba(0,0,0,0.55); }
   .f-id{ font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--muted); margin-top:3px; }
   .f-vendor{ color:var(--muted); font-size:14px; }
   .f-status{ font-family:"JetBrains Mono",monospace; font-size:12px; font-weight:500; text-align:right; }
@@ -187,6 +188,12 @@
   .badge-name{ font-weight:600; font-size:14px; color:var(--ink); line-height:1.3; }
   .badge-sub{ font-family:"JetBrains Mono",monospace; font-size:11.5px; font-weight:600; color:var(--bc); letter-spacing:.03em; }
   .badge-date{ font-family:"JetBrains Mono",monospace; font-size:11.5px; color:var(--muted); }
+  .badge-group-label{ font-family:"JetBrains Mono",monospace; font-size:12px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+  .badge-group-label::before{ content:""; width:20px; height:1px; background:var(--accent); display:inline-block; }
+  .pbadge-emblem{ position:relative; flex:none; width:52px; height:52px; border-radius:14px; display:grid; place-items:center; background:linear-gradient(160deg, var(--bc), rgba(10,14,22,0.55)); box-shadow:inset 0 1px 0 rgba(255,255,255,0.22); }
+  .pbadge-emblem::before{ content:""; position:absolute; inset:-12px; z-index:0; border-radius:50%; background:radial-gradient(closest-side, var(--bc), transparent 72%); filter:blur(13px); opacity:.55; }
+  .pbadge-emblem svg{ position:relative; z-index:1; width:24px; height:24px; color:#fff; }
+  .pbadge-desc{ font-size:12.5px; color:var(--muted); line-height:1.35; margin-top:2px; }
 
   .contact-card{ border:1px solid var(--border); border-radius:var(--radius); background:var(--panel); padding:40px; text-align:center; background-image:radial-gradient(500px 200px at 50% 0%, rgba(255,176,32,0.08), transparent 70%); }
   .contact-card h2{ font-size:clamp(24px,4vw,32px); margin-bottom:10px; }
@@ -284,8 +291,8 @@
   <section id="badges">
     <div class="wrap">
       <div class="sec-head"><h2>Badges</h2></div>
-      <p class="sec-desc">Awarded on HackerOne for validated findings across OWASP vulnerability categories.</p>
-      <div class="badges reveal" id="badges-list"></div>
+      <p class="sec-desc">Recognition earned on HackerOne — OWASP Top 10 category achievements and platform milestones.</p>
+      <div class="reveal" id="badges-list"></div>
     </div>
   </section>
 
@@ -346,9 +353,9 @@ const DATA = {
 
   // --- Stats --- (add "secret: true" to any stat to blur it until hover/tap)
   stats: [
-    { num: "2296",  label: "Reputation" },
-    { num: "4.37",  label: "Signal" },
-    { num: "17.88", label: "Impact" },
+    { num: "2500",  label: "Reputation" },
+    { num: "4.46",  label: "Signal" },
+    { num: "18.03", label: "Impact" },
     { num: "$50K+", label: "Bounty earned", secret: true }
   ],
 
@@ -361,6 +368,15 @@ const DATA = {
     {
       sev: "crit", sevLabel: "CRIT",
       title: "WAF Bypass Enabling Authenticated SQL Injection (Cross-Tenant Database Read)",
+      meta: "Reported · 2026",
+      vendor: "Private program",
+      bounty: "$$$$",
+      private: true,
+      link: ""
+    },
+    {
+      sev: "high", sevLabel: "HIGH",
+      title: "XML External Entity (XXE) Injection — Arbitrary Server-Side File Read via Identity Provider SAML Metadata",
       meta: "Reported · 2026",
       vendor: "Private program",
       bounty: "$$$$",
@@ -467,12 +483,22 @@ const DATA = {
   focusAreas: ["Attack Surface Recon", "GraphQL Security", "API Security", "Access Control", "Business Logic", "Workflow Analysis", "Information Disclosure"],
 
   // --- Badges --- (OWASP category achievements; copy a { } block to add more. color = emblem color)
-  badges: [
-    { code: "A7", name: "Cross-Site Scripting (XSS)", date: "February 7, 2024", color: "#FF8A3D" },
+  owasp: [
+    { code: "A4", name: "XML External Entities (XXE)", date: "August 2, 2026",   color: "#8B7CF6" },
+    { code: "A7", name: "Cross-Site Scripting (XSS)",  date: "February 7, 2024", color: "#FF8A3D" },
     { code: "A5", name: "Broken Access Control",       date: "April 11, 2023",   color: "#3FB6A8" },
     { code: "A1", name: "Injection",                   date: "January 3, 2023",  color: "#FF4D5E" },
     { code: "A3", name: "Sensitive Data Exposure",     date: "November 9, 2022", color: "#6EA8FF" },
-    { code: "A2", name: "Broken Authentication",       date: "October 4, 2022", color: "#FFB020" }
+    { code: "A2", name: "Broken Authentication",       date: "October 4, 2022",  color: "#FFB020" }
+  ],
+
+  // --- Platform badges --- (icon options: trophy bug users star megaphone target clock flag)
+  platform: [
+    { icon: "trophy",    name: "Bounty Hunter",     date: "August 10, 2026",    color: "#FFB020", desc: "One hundred bounties received" },
+    { icon: "bug",       name: "Insecticide",       date: "September 11, 2025", color: "#3FB6A8", desc: "Fifty reports closed as resolved" },
+    { icon: "users",     name: "Diversity",         date: "July 31, 2025",      color: "#6EA8FF", desc: "Reported bugs to 20 different teams" },
+    { icon: "star",      name: "Belle of the Ball", date: "March 28, 2024",     color: "#FF8A3D", desc: "Top-ranked report on the Hacktivity feed" },
+    { icon: "target",    name: "Hacking Hackers",   date: "January 19, 2024",   color: "#FF4D5E", desc: "Hacked HackerOne" }
   ],
 
   // --- Testimonials --- (copy a { } block to add more)
@@ -570,8 +596,18 @@ document.getElementById('about-text').innerHTML = DATA.about.map(p => '<p>'+p+'<
 document.getElementById('focus-chips').innerHTML = DATA.focusAreas.map(c => '<span class="chip">'+c+'</span>').join('');
 
 // Badges
-document.getElementById('badges-list').innerHTML = (DATA.badges || []).map(b => {
-  const emblem =
+const PICONS = {
+  trophy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>',
+  bug: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>',
+  users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+  star: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+  megaphone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>',
+  target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+  clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+  flag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg>'
+};
+function owaspCard(b){
+  return '<div class="badge-card" style="--bc:'+b.color+'">'+
     '<span class="badge-emblem">'+
       '<svg class="badge-svg" viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg">'+
         '<path class="shield" d="M60 5 L112 24 V72 C112 104 89 126 60 135 C31 126 8 104 8 72 V24 Z"/>'+
@@ -579,15 +615,29 @@ document.getElementById('badges-list').innerHTML = (DATA.badges || []).map(b => 
         '<text class="b-owasp" x="60" y="50">OWASP</text>'+
         '<text class="b-code" x="60" y="110">'+b.code+'</text>'+
       '</svg>'+
-    '</span>';
-  return '<div class="badge-card" style="--bc:'+b.color+'">'+emblem+
+    '</span>'+
     '<span class="badge-info">'+
       '<span class="badge-name">'+b.name+'</span>'+
       '<span class="badge-sub">OWASP '+b.code+' \u00b7 2017</span>'+
       (b.date ? '<span class="badge-date">'+b.date+'</span>' : '')+
     '</span>'+
   '</div>';
-}).join('');
+}
+function platformCard(b){
+  return '<div class="badge-card" style="--bc:'+b.color+'">'+
+    '<span class="pbadge-emblem">'+(PICONS[b.icon]||PICONS.star)+'</span>'+
+    '<span class="badge-info">'+
+      '<span class="badge-name">'+b.name+'</span>'+
+      (b.desc ? '<span class="pbadge-desc">'+b.desc+'</span>' : '')+
+      (b.date ? '<span class="badge-date">'+b.date+'</span>' : '')+
+    '</span>'+
+  '</div>';
+}
+document.getElementById('badges-list').innerHTML =
+  '<div class="badge-group-label">OWASP Top 10</div>'+
+  '<div class="badges">'+(DATA.owasp||[]).map(owaspCard).join('')+'</div>'+
+  '<div class="badge-group-label" style="margin-top:34px">Platform</div>'+
+  '<div class="badges">'+(DATA.platform||[]).map(platformCard).join('')+'</div>';
 
 // Testimonials
 document.getElementById('testimonials-list').innerHTML = (DATA.testimonials || []).map(t => (
@@ -692,6 +742,57 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     target.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'start' });
   });
 });
+
+/* ---- Background parallax depth (grid + orbs at different depths) ---- */
+(function(){
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const bg = document.querySelector('.bg-fx');
+  const layers = [
+    { el: document.querySelector('.orb.a'), mx: 130, my: 95, sy: 0.05, ax: 34, ay: 26, spd: 0.00022, ph: 0.0 },
+    { el: document.querySelector('.orb.b'), mx: -105, my: 78, sy: 0.07, ax: 30, ay: 22, spd: 0.00018, ph: 2.1 },
+    { el: document.querySelector('.orb.c'), mx: 155, my: -110, sy: 0.035, ax: 28, ay: 30, spd: 0.00025, ph: 4.2 }
+  ].filter(L => L.el);
+  let tmx = 0, tmy = 0, mx = 0, my = 0;
+  window.addEventListener('mousemove', function(e){
+    tmx = (e.clientX / window.innerWidth) - 0.5;
+    tmy = (e.clientY / window.innerHeight) - 0.5;
+  }, { passive: true });
+  function frame(t){
+    mx += (tmx - mx) * 0.09; my += (tmy - my) * 0.09;
+    const sc = window.scrollY || window.pageYOffset || 0;
+    if (bg) bg.style.transform = 'translate3d(' + (mx*36) + 'px,' + (my*36) + 'px,0)';
+    for (const L of layers){
+      const ix = Math.sin(t*L.spd + L.ph) * L.ax;
+      const iy = Math.cos(t*L.spd*0.9 + L.ph) * L.ay;
+      L.el.style.transform = 'translate3d(' + (mx*L.mx + ix) + 'px,' + (my*L.my + iy + sc*L.sy) + 'px,0)';
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+/* ---- 3D tilt on cards + finding rows ---- */
+(function(){
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (window.matchMedia('(hover: none)').matches) return; // skip on touch
+  function addTilt(el, max, lift, scale){
+    el.addEventListener('mousemove', function(e){
+      const r = el.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      el.style.transition = 'transform 0.06s ease-out';
+      el.style.transform = 'perspective(800px) rotateX(' + (-py*max).toFixed(2) + 'deg) rotateY(' + (px*max).toFixed(2) + 'deg) translateY(' + lift + 'px) scale(' + scale + ')';
+      el.style.zIndex = '2';
+    }, { passive: true });
+    el.addEventListener('mouseleave', function(){
+      el.style.transition = '';
+      el.style.transform = '';
+      el.style.zIndex = '';
+    });
+  }
+  document.querySelectorAll('.tip, .badge-card, .quote-card').forEach(function(el){ addTilt(el, 7, -3, 1.015); });
+  document.querySelectorAll('.ledger-row.item').forEach(function(el){ addTilt(el, 4.5, -1, 1.004); });
+})();
 </script>
 </body>
 </html>
